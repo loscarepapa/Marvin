@@ -1,21 +1,14 @@
 # Marvin
 
-**TODO: Add description**
+**Bot to bring the entire portfolio of policies issued in Qualitas**
 
-## Installation
+## Use 
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `marvin` to your list of dependencies in `mix.exs`:
+Start ChromeDriver with `./chromedriver --port=9515 --verbose background=true`
 
-```elixir
-def deps do
-  [
-    {:marvin, "~> 0.1.0"}
-  ]
-end
-```
+Init iex with `iex -S mix`
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/marvin](https://hexdocs.pm/marvin).
+Init Scrawper with `Marvin.run`
+
+
 
