@@ -1,14 +1,30 @@
 Application.start :hound
 
+defmodule AgentCredentials do
+  defstruct [
+    born: 2012,
+    agente: 78069,
+    username: "MAESTRA",
+    pass: "Brv099",
+    thisDir: File.cwd()
+  ]
+
+end
+
 defmodule Marvin do
   use Hound.Helpers
 
+  def init do 
+    agent = %AgentCredentials{}
 
-  def init(%{born: born, agente: agente, username: username, pass: pass}) do 
+    login(
+      agent.agente,
+      agent.username,
+      agent.pass 
+    )
+    getPolizas(agent.born)
+    moveXls(agent.thisDir)
 
-    login(agente, username, pass)
-    getPolizas(born)
-    moveXls()
   end
 
   def login(agente, username, pass) do 
@@ -30,15 +46,34 @@ defmodule Marvin do
 
     navigate_to("https://agentes.qualitas.com.mx/group/guest/reportes")
 
-    execute_script("jQuery(this)._ReportQualitasPortlet_postWithExcel('https://agentes.qualitas.com.mx/group/guest/reportes/-/Report-Qualitas/xls/emitidas?p_p_lifecycle=2&p_p_resource_id=verExcelEmitida&p_p_cacheability=cacheLevelPage',{agent:'78069',month:'',year:'',date_from:'01/01/#{born}',date_to:'21/10/2020'});")
+    execute_script("
+             jQuery(this).
+              _ReportQualitasPortlet_postWithExcel('https://agentes.qualitas.com.mx/" <> 
+                "group/guest/reportes/-/Report-Qualitas/xls/" <> 
+                  "emitidas?p_p_lifecycle=2&p_p_resource_id=verExcelEmitida&p_p_cacheability=cacheLevelPage',
+      {
+              agent:'78069',
+              month:'',
+              year:'',
+              date_from:'01/01/#{born}',
+              date_to:'21/10/2020'
+      });"
+    )
 
   end
 
-  def moveXls do
-    {:ok, download_path} = File.cwd()
+  def moveXls({:ok, dir}) do
 
-    File.rename("./../../../Downloads/poliza-emitida.xls", "#{download_path}/polizas/polizas.xls")
+    File.rename("./../../../Downloads/poliza-emitida.xls", "#{dir}/polizas/polizas.xls")
 
+  end
+
+  def endSession(fileMoved) do
+    if(fileMoved == :ok) do 
+      Process.send_after(self(), :ping, 10000)
+    end
+
+    IO.puts "all is ok" 
   end
 
 end
