@@ -17,13 +17,17 @@ defmodule Marvin do
   def init do 
     agent = %AgentCredentials{}
 
+    #login in Qualitas
     login(
       agent.agente,
       agent.username,
       agent.pass 
     )
+    #insert script in web
     getPolizas(agent.born)
-    moveXls(agent.thisDir)
+
+    #move file
+    moveXls(agent.thisDir) 
 
   end
 
@@ -65,15 +69,17 @@ defmodule Marvin do
   def moveXls({:ok, dir}) do
 
     File.rename("./../../../Downloads/poliza-emitida.xls", "#{dir}/polizas/polizas.xls")
-
+    endSessionWeb("#{dir}/polizas/polizas.xls")
   end
 
-  def endSession(fileMoved) do
-    if(fileMoved == :ok) do 
-      Process.send_after(self(), :ping, 10000)
-    end
+  def endSessionWeb(fileTo) do
 
-    IO.puts "all is ok" 
+    [{:ok, pid1, parser1}, {:ok, _, _}, {:ok, _, _}] = Exoffice.parse(fileTo)
+    stream = Exoffice.count_rows(pid1, parser1)
+
+    IO.puts stream
+
+    #Hound.end_session()
   end
 
 end
