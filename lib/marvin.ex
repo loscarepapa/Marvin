@@ -75,6 +75,7 @@ defmodule Marvin do
   def endSessionWeb(fileTo) do
 
     [{:ok, pid1, parser1}, {:ok, _, _}, {:ok, _, _}] = Exoffice.parse(fileTo)
+
     stream = Exoffice.count_rows(pid1, parser1)
 
     IO.puts stream
