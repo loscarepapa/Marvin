@@ -1,6 +1,16 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
 
+# This file contain credentials.
+/config/credentials.json
+
+# This file contain dates.
+/polizas/polizas.xls
+
+# This file contain dates.
+/chromedriver.exe
+/chromedriver
+
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
 

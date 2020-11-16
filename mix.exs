@@ -14,7 +14,7 @@ defmodule Marvin.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger, :hound]
     ]
   end
 
@@ -23,9 +23,9 @@ defmodule Marvin.MixProject do
     [
       {:hound, "~> 1.0"},
       {:floki, "~> 0.29.0"},
-      {:xlsxir, "~> 1.6.4"}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:exoffice, "~> 0.3.2"},
+      {:poison, "~> 4.0.1"},
+      {:printex, "~> 1.1.0"}
     ]
   end
 end
