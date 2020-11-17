@@ -17,6 +17,8 @@
   "p1_utils": {:hex, :p1_utils, "1.0.13", "176577cafb54a8c2fdc0a7fc62b9a21ab0f66588f4062792cd9e65f3e500bfdb", [:rebar3], [], "hexpm", "68a081f69b478bc309a857f45957ab5c921da5d4ebd755520b983a5626230a3e"},
   "parallel_stream": {:hex, :parallel_stream, "1.0.6", "b967be2b23f0f6787fab7ed681b4c45a215a81481fb62b01a5b750fa8f30f76c", [:mix], [], "hexpm", "639b2e8749e11b87b9eb42f2ad325d161c170b39b288ac8d04c4f31f8f0823eb"},
   "parse_trans": {:hex, :parse_trans, "3.3.0", "09765507a3c7590a784615cfd421d101aec25098d50b89d7aa1d66646bc571c1", [:rebar3], [], "hexpm", "17ef63abde837ad30680ea7f857dd9e7ced9476cdd7b0394432af4bfc241b960"},
+  "poison": {:hex, :poison, "4.0.1", "bcb755a16fac91cad79bfe9fc3585bb07b9331e50cfe3420a24bcc2d735709ae", [:mix], [], "hexpm", "ba8836feea4b394bb718a161fc59a288fe0109b5006d6bdf97b6badfcf6f0f25"},
+  "printex": {:hex, :printex, "1.1.0", "9f1861445047d9241b344379f8e6cc438b83d2454173e1d9cc7a38bfd47ebb10", [:mix], [], "hexpm", "52cb28fbbc16803845ed77bcf1f5705d25cdaa2939b11440b7c4db4601430258"},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.6", "cf344f5692c82d2cd7554f5ec8fd961548d4fd09e7d22f5b62482e5aeaebd4b0", [:make, :mix, :rebar3], [], "hexpm", "bdb0d2471f453c88ff3908e7686f86f9be327d065cc1ec16fa4540197ea04680"},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.5.0", "8516502659002cec19e244ebd90d312183064be95025a319a6c7e89f4bccd65b", [:rebar3], [], "hexpm", "d48d002e15f5cc105a696cf2f1bbb3fc72b4b770a184d8420c8db20da2674b38"},
   "xlsxir": {:hex, :xlsxir, "1.6.4", "d1e69439cbd9edc1190950f9f883ac364e1f31641e0395ccdb27761791b169a3", [:mix], [{:erlsom, "~> 1.5", [hex: :erlsom, repo: "hexpm", optional: false]}], "hexpm", "38e91f65eb8a4c8dea07d941c8b7e21baf8c8d4938232395c9ffd19d2eb071f2"},
