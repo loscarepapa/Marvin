@@ -23,6 +23,7 @@ defmodule Marvin do
       agent.username,
       agent.pass 
     )
+
     #insert script in web
     getPolizas(agent.born)
 
@@ -75,10 +76,8 @@ defmodule Marvin do
   def endSessionWeb(fileTo) do
 
     [{:ok, pid1, parser1}, {:ok, _, _}, {:ok, _, _}] = Exoffice.parse(fileTo)
-
-    stream = Exoffice.count_rows(pid1, parser1)
-
-    IO.puts stream
+  
+    Exoffice.get_rows(pid1, parser1)
 
     #Hound.end_session()
   end
