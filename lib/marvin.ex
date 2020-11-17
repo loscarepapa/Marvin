@@ -86,7 +86,6 @@ def moveXls({:ok, dir}) do
     File.read("./../../Downloads/poliza-emitida.xls") != {:error, :enoent} ->
       File.rename("./../../Downloads/poliza-emitida.xls", "#{dir}/polizas/polizas.xls")
 
-
     :true == :true -> prints "\n -> The file no exist, please check the node in save!", :yellow
 
   end
