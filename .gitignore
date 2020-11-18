@@ -5,7 +5,7 @@
 /config/credentials.json
 
 # This file contain dates.
-/polizas/polizas.xls
+/polizas/polizas.csv
 
 # This file contain dates.
 /chromedriver.exe
