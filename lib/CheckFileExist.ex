@@ -12,8 +12,8 @@ defmodule CheckFile do
   def existFile(exist, seconds) do
     :timer.sleep(1000)
 
-    if File.exists?("./../../../Downloads/poliza-emitida.xls") || 
-      File.exists?("./../../Downloads/poliza-emitida.xls") do
+    if File.exists?("./../../../Downloads/tablePolizaEmitida.csv") || 
+      File.exists?("./../../Downloads/tablePolizaEmitida.csv") do
 
       existFile(true, seconds)
 

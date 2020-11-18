@@ -1,6 +1,5 @@
 Application.start :hound
 import Printex
-import CheckFile
 
 defmodule Marvin do
 
@@ -10,7 +9,6 @@ defmodule Marvin do
   @fileName "./config/credentials.json"
 
   def getAgente(file) do
-
     with {:ok, body} <- File.read(file),
          {:ok, json} <- Poison.decode(body), do:  {:ok, json}
     end
@@ -44,62 +42,78 @@ defmodule Marvin do
     fill_field(find_element(:name, "password"), "#{pass}")
     find_element(:name, "submit") |> click() 
     prints "\n -> Login successful!", :green
-    :timer.sleep(1000)
 
   end
 
   def getPolizas(born) do
 
-    prints "\n -> Downloading file ...", :blue
+    {{year, mounth, day}, _} = :calendar.universal_time()
+
+    prints "\n -> Generating table ...", :blue
     navigate_to("https://agentes.qualitas.com.mx/group/guest/reportes")
     execute_script("
-             jQuery(this).
-              _ReportQualitasPortlet_postWithExcel('https://agentes.qualitas.com.mx/" <> 
-                "group/guest/reportes/-/Report-Qualitas/xls/" <> 
-                  "emitidas?p_p_lifecycle=2&p_p_resource_id=verExcelEmitida&p_p_cacheability=cacheLevelPage',
-      {
-              agent:'78069',
-              month:'',
-              year:'',
-              date_from:'01/01/#{born}',
-              date_to:'21/10/2020'
-      });"
+            var select = document.querySelector('#select-report');
+            select.value = 10;
+            var father = select.parentNode;
+            father.children[2].setAttribute('id', 'load-panel-reporte');
+      "
     )
+    find_element(:id, "load-panel-reporte") |> click()
+    find_element(:name, "param") |> click()
+    execute_script("
+            var param = document.querySelector('.select-param');
+            param.children[1].children[0].setAttribute('id','rangeOfDate')
+      "
+    )
+    find_element(:id, "rangeOfDate") |> click()
+    execute_script("
+      $('#from').val('#{born}')
+      $('#to').val('#{day}/#{mounth}/#{year}')
+      "
+    )
+    find_element(:name, "accept") |> click()
+    :timer.sleep(4000)
+    execute_script("
+      document.querySelector('#tablePolizaEmitida_length').children[0].setAttribute('id', 'select_pagination')
+      document.querySelector('#select_pagination').children[2].value = 5000
+      "
+    )
+    find_element(:css, "#select_pagination option[value='5000']")
+    |> click
+
+    prints "\n -> Table generated successful!", :green
+
+    download()
+  end
+
+  def download() do
+
+    prints "\n -> Downloading file ...", :blue
+    {:ok, script} = File.read("./lib/createCsv.js")
+    execute_script(script)
     CheckFile.existFile(false, 0)
-    prints "\n -> Download successful!", :green
+    moveFile(File.cwd)
+
+  end 
+
+  def moveFile({:ok, dir}) do
+    prints "\n -> Creating directory and moving file ...", :blue
+    File.mkdir_p("./polizas")
+
+    cond do
+
+      File.read("./../../../Downloads/tablePolizaEmitida.csv") != {:error, :enoent} ->
+        File.rename("./../../../Downloads/tablePolizaEmitida.csv", "#{dir}/polizas/polizas.csv")
+
+
+      File.read("./../../Downloads/tablePolizaEmitida.csv") != {:error, :enoent} ->
+        File.rename("./../../Downloads/tablePolizaEmitida.csv", "#{dir}/polizas/polizas.csv")
+
+      :true == :true -> prints "\n -> The file no exist, please check the node in save!", :yellow
+
+    end
+
+    prints "\n -> Moved successful!", :green
     :timer.sleep(1000)
-    moveXls(File.cwd)
-
   end
-
-def moveXls({:ok, dir}) do
-
-  prints "\n -> Creating directory and moving file ...", :blue
-  File.mkdir_p("./polizas")
-
-  cond do
-
-    File.read("./../../../Downloads/poliza-emitida.xls") != {:error, :enoent} ->
-      File.rename("./../../../Downloads/poliza-emitida.xls", "#{dir}/polizas/polizas.xls")
-
-
-    File.read("./../../Downloads/poliza-emitida.xls") != {:error, :enoent} ->
-      File.rename("./../../Downloads/poliza-emitida.xls", "#{dir}/polizas/polizas.xls")
-
-    :true == :true -> prints "\n -> The file no exist, please check the node in save!", :yellow
-
-  end
-
-  prints "\n -> Moved successful!", :green
-  :timer.sleep(1000)
-
-end
-
-def endSessionWeb(fileTo) do
-  [{:ok, pid1, parser1}, {:ok, _, _}, {:ok, _, _}] = Exoffice.parse(fileTo)
-  stream = Exoffice.count_rows(pid1, parser1)
-  IO.puts stream
-    #Hound.end_session()
-end
-
 end
