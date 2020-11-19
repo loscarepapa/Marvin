@@ -72,7 +72,7 @@ defmodule Marvin do
       "
     )
     find_element(:name, "accept") |> click()
-    :timer.sleep(4000)
+    CheckTable.existTable(false, 0)
     execute_script("
       document.querySelector('#tablePolizaEmitida_length').children[0].setAttribute('id', 'select_pagination')
       document.querySelector('#select_pagination').children[2].value = 5000
@@ -83,7 +83,6 @@ defmodule Marvin do
 
     prints "\n -> Table generated successful!", :green
 
-    download()
   end
 
   def download() do
@@ -116,4 +115,57 @@ defmodule Marvin do
     prints "\n -> Moved successful!", :green
     :timer.sleep(1000)
   end
+end
+
+defmodule CheckFile do
+
+  def existFile(exist, seconds) when exist == true do
+
+    prints "\n -> Saved in #{seconds}s", :yellow
+    Hound.end_session
+
+  end
+
+  def existFile(_, seconds) when seconds >= 30 do
+
+    prints "\n -> It takes too long to load", :red
+    Hound.end_session
+
+  end
+
+  def existFile(exist, seconds) do
+
+    :timer.sleep(1000)
+
+    if File.exists?("./../../../Downloads/tablePolizaEmitida.csv") || 
+      File.exists?("./../../Downloads/tablePolizaEmitida.csv") do
+      existFile(true, seconds)
+    else
+      existFile(exist, seconds + 1)
+    end
+  end
+
+end
+
+defmodule CheckTable do
+
+  def existTable(exist, seconds) when exist == true do
+
+    prints "\n -> Table exist in #{seconds}s", :yellow
+    Marvin.download()
+
+  end
+
+  def existTable(exist, seconds) do
+
+  use Hound.Helpers
+    :timer.sleep(1000)
+
+    if match?({:ok, _}, search_element(:id, "tablePolizaEmitida")) do
+      existTable(true, seconds)
+    else
+      existTable(exist, seconds + 1)
+    end
+  end
+
 end

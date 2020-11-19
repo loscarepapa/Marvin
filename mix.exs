@@ -25,8 +25,7 @@ defmodule Marvin.MixProject do
       {:floki, "~> 0.29.0"},
       {:exoffice, "~> 0.3.2"},
       {:printex, "~> 1.1.0"},
-      {:httpoison, "~> 1.6"},
-      {:crawly, "~> 0.12.0"},
+      {:poison, "~> 4.0.1"}
     ]
   end
 end
